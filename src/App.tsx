@@ -1,10 +1,14 @@
 import React from 'react';
 
-import Search from './pages/search';
+import Search from './pages/Search';
+import Details from './pages/Details';
 
 function App() {
   return (
-    <Search /> 
+    <div>
+        <Search /> 
+        <Details />     
+    </div>
   );
 }
 

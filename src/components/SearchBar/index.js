@@ -2,14 +2,18 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField, Grid } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
+import IconButton from "@material-ui/core/IconButton";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: theme.spacing(2),
+        width: 600,
     },
   }));
 
-export default function Search() {
+export default function SearchBar(props) {
+    const { onSearch } = props;
     const classes = useStyles();
     
     return (
@@ -20,7 +24,15 @@ export default function Search() {
                     label="Search book" 
                     type="search" 
                     variant="outlined"
-                    InputProps={{endAdornment: <SearchIcon />}}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment>
+                                <IconButton>
+                                    <SearchIcon onClick={onSearch} />
+                                </IconButton>
+                            </InputAdornment>
+                    )}}
+                    fullWidth
                 />
             </Grid>
         </Grid>
