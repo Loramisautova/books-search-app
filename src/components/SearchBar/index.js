@@ -1,40 +1,53 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField, Grid } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
+import { TextField } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        padding: theme.spacing(2),
-        width: 600,
-    },
-  }));
+import { useLazySearchVolumeQuery } from '../../store/api';
 
-export default function SearchBar(props) {
-    const { onSearch } = props;
-    const classes = useStyles();
-    
+export const SearchBar = (props) => {
+    const { value, onSearch } = props;
+    const [query, setQuery] = useState('');
+    const [searchVolume] = useLazySearchVolumeQuery();
+
+    useEffect(() => {
+        if (value !== undefined) {
+            setQuery(value);
+            searchVolume(value);
+        }
+    }, [value]);
+
+    const handleChange = (event) => {
+        setQuery(event.target.value);
+    };
+
+    const handleSearch = (e) => {
+        if (query) {
+            onSearch?.(query);
+            e.preventDefault();
+        }
+    };
+
     return (
-        <Grid container direction="column" justifyContent="center" alignItems="center">
-            <Grid item className={classes.root}>
-                <TextField
-                    id="outlined-search" 
-                    label="Search book" 
-                    type="search" 
-                    variant="outlined"
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment>
-                                <IconButton>
-                                    <SearchIcon onClick={onSearch} />
-                                </IconButton>
-                            </InputAdornment>
+        <form noValidate autoComplete="off" onSubmit={handleSearch}>
+            <TextField
+                id="outlined-search"
+                label="Search book"
+                type="search"
+                variant="outlined"
+                value={query}
+                onChange={handleChange}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <IconButton onClick={handleSearch}>
+                                <SearchIcon />
+                            </IconButton>
+                        </InputAdornment>
                     )}}
-                    fullWidth
-                />
-            </Grid>
-        </Grid>
+                fullWidth
+            />
+        </form>
     )
 }
