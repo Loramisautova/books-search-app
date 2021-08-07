@@ -1,14 +1,13 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 
-import Search from './pages/Search';
-import Details from './pages/Details';
+import { AppRouter } from './router';
 
 function App() {
   return (
-    <div>
-        <Search /> 
-        <Details />     
-    </div>
+    <BrowserRouter>
+        <AppRouter />
+    </BrowserRouter>
   );
 }
 
